@@ -16,7 +16,14 @@
                 code {
                     tab-size: 4;
 					-moz-tab-size: 4;
+					color: grey;
                 }
+				figcaption {
+					font-size: 50%;
+				}
+				img {
+					height: 5em;
+				}
             </style>
 	</head>
 	<body>
@@ -34,21 +41,31 @@
 						<li><code>
 							git init, git add, git commit, git log, git push,
 							git pull, git merge, git rebase, git remote, git
-							reset, git checkout, git branch
+							reset, git checkout, git branch, git clone
 						</code></li>
 					</ul>
 				</section>
 				<section>
 					<h2>What is Git?</h2>
 					<!-- TODO: git logo -->
+					<figure>
+						<img
+						src="https://upload.wikimedia.org/wikipedia/commons/6/62/Git-logo-orange.svg">
+						<figcaption>Git Logo by Jason Long is licensed under the
+							<a href="https://creativecommons.org/licenses/by/3.0/deed.en">Creative Commons Attribution 3.0 Unported
+								License.</a></figcaption>
+					</figure>
 					<p class="fragment">
-						Git is a version control system that is commonly used
-						for software.
+						Git is a version control system created by Linus
+						Torvalds that is commonly used for software.
 					</p>
 					<aside class="notes">
 						<ul>
 							<li>Explain the concept of version control.</li>
 							<li>Better than zips and email.</li>
+							<li>Linus wrote the prototype in about 2 weeks
+								because he didn't like any of the existing
+								solutions.</li>
 						</ul>
 					</aside>
 				</section>
@@ -79,7 +96,7 @@
 					<h1>Using Git</h1>
 				</section>
 				<section>
-					<h2><code>Creating a git repo</code></h2>
+					<h2>Creating a git repo</h2>
 					<ul>
 						<li>Create a new folder (or use an existing folder if we
 						are adding git to an existing codebase)</li>
@@ -114,7 +131,7 @@
 						$ vim knighthacks.js
 						$ git status
 					</code></pre>
-					<aside>
+					<aside class="notes">
 						My shell prompt actually has nice built in git
 						utilities, which show the current branch and whether
 						I've changed anything.
@@ -139,6 +156,10 @@
 						$ git add knighthacks.js
 						$ git status
 					</code></pre>
+					<aside class="notes">
+						If you make a mistake, you can use git reset to unstage
+						all of your changes.
+					</aside>
 				</section>
 				<section>
 					<h2>Creating your first commit</h2>
@@ -207,6 +228,294 @@
 								commit"</li>
 						</ul>
 					</aside>
+				</section>
+				<section>
+					<h2>The Log</h2>
+					<code>git log</code> is a useful command that displays the
+					previous commits.<br>
+					<ul>
+						<li><code>q</code> quits</li>
+						<li>Arrow keys or vim bindings to scroll</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Branching</h2>
+					<ul>
+						<li>
+							We often want to maintain several separate versions
+							of a codebase.
+						</li>
+						<li>Feature branches</li>
+						<li>Personal branches</li>
+						<li>Stable release branches</li>
+						<li>...</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>
+								We might want to have a stable branch where we
+								don't include untested changes, or maybe we are
+								working on a new feature but it isn't finished
+								yet.
+							</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h2>Creating a new branch</h2>
+					The default branch is called <code>master</code> in git, but
+					you can call new branches whatever you want.
+					<pre><code data-trim class="shell">
+						$ git branch my_branch
+						$ git checkout my_branch
+						$ git status
+					</code></pre>
+					<!-- Diagram -->
+					<aside class="notes">
+						<ul>
+							<li>git branch creates a branch but doesn't switch
+								to it.</li>
+							<li>You can run git branch to see all branches.</li>
+							<li>Branches are implemented with pointers, so git
+								branch is very efficient and doesn't copy
+								anything.</li>
+							<li>git status and git log at this point will help
+								you see what has happened.</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h2>Combining Branches</h2>
+					There are two main ways to combine branches:<br>
+					<ul>
+						<li>Merge</li>
+						<li>Rebase</li>
+					</ul>
+					<aside class="notes">
+						I will cover merge first and then rebase at the end if
+						there is time. Rebases can be highly complicated and
+						have the potential to do much more damage to your
+						codebase.
+					</aside>
+				</section>
+				<section>
+					<h2>Fast-Forward Merge</h2>
+					<ul>
+						<li>
+							If only one branch has added commits since the
+							split, git will do a fast-forward merge.
+						</li>
+						<li>
+							This simply points the current branch pointer to the
+							latest commit on the secondary branch.
+						</li>
+						<li>There will be no merge commit.</li>
+					</ul>
+					<pre><code data-trim class="shell">
+						$ git checkout master
+						$ git merge my_branch
+					</code></pre>
+					<!-- Diagram -->
+				</section>
+				<section>
+					<h2>Normal Merge</h2>
+					<li>
+						If the branches have diverged, git will attempt to
+						reconcile their differences.
+					</li>
+					<li>
+						Git always creates a merge commmit to signify the merge.
+					</li>
+					<li>
+						You might get a conflict if the two branches edited the
+						same files or lines of code.
+					</li>
+					<aside class="notes">
+						Git is pretty good at doing simple merges, but if there
+						is a conflict, it won't know what to do. How you resolve
+						a conflict depends greatly on the specific situation,
+						and is something you can only learn with time.
+					</aside>
+					<!-- Diagram -->
+				</section>
+				<section>
+					<h1>Resolving conflicts demo!</h1>
+				</section>
+				<section>
+					<h2>What is GitHub?</h2>
+					<figure>
+						<img style="background-color:white"
+						src="https://upload.wikimedia.org/wikipedia/commons/9/95/Font_Awesome_5_brands_github.svg">
+						<figcaption>Github Logo by 
+							<a href="https://fontawesome.com">https://fontawesome.com</a>
+							is licensed under the 
+							<a href="https://creativecommons.org/licenses/by/4.0/deed.en">Creative Commons Attribution 4.0 International license</a>.
+						</figcaption>
+					</figure>
+					<ul>
+						<li>GitHub is a hosting provider for git repositories. </li>
+						<li>
+							It is the most popular option, but there exist
+							competing services like GitLab and Bitbucket that
+							work the same way.
+						</li>
+						<li>
+							You can even self-host git on a server you own.
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Creating a GitHub account</h2>
+					Head over to <a href="https://github.com">github.com</a> and
+					click sign up (top right corner).
+				</section>
+				<section>
+					<h2>Git Architecture</h2>
+					GitHub is just a server where git repositories can live and
+					be accessed and written to by multiple people.
+					<figure>
+						<img
+						style="background-color:white;"src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Client-server-model.svg">
+						<figcaption>Copyright David Vignoni, licensed under <a
+							href="https://www.gnu.org/licenses/lgpl.html">LGPL</a>
+						</figcaption>
+					</figure>
+					Although git is decentralized and can be used in a
+					peer-to-peer fashion, in practice, nearly everyone
+					follows a simple client-server architecture.
+				</section>
+				<section>
+					<h2>Linking your repo to GitHub</h2>
+					<ul>
+						<li>Create a new repository on GitHub</li>
+						<li>
+							Navigate to your repository home page and press the
+							green button to get the https link to your
+							repository.
+						</li>
+						<li>
+							<pre><code data-trim class="shell">
+								$ git checkout master
+								$ git remote set-url origin &lt;link&gt;
+								$ git push
+							</code></pre>
+						</li>
+					</ul>
+					<aside class="notes">
+						git push will give an error if the current branch
+						doesn't exist on the server. Just follow the
+						instructions and you'll be good. You may also be
+						prompted to sign in to GitHub.
+					</aside>
+				</section>
+				<section>
+					<h2>Synchronizing with the server</h2>
+					<ul>
+						<li>
+							Git stores a local copy of the state of the remote
+							server in <code>origin</code>.
+						</li>
+						<li>
+							<code>git fetch --all</code> will synchronize
+							<code>origin</code> with the server.
+						</li>
+						<li>
+							Then, you can run <code>git merge
+							origin/master</code> to get the changes from the
+							server into your local branch.
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h2><code>git push</code> and <code>git pull</code></h2>
+					<ul>
+						<li>
+							<code>git status</code> will now tell you if you
+							your branch is ahead or behind <code>origin</code>.
+						</li>
+						<li>
+							If you're ahead, you can use <code>git push</code>
+							to update the server.
+						</li>
+						<li>
+							If you're behind, you can use <code>git pull</code>
+							to update your local repo.
+						</li>
+					</ul>
+					<aside class="notes">
+						This is where that configuration option comes in. By
+						default, git pull will do a merge, but I prefer it only
+						to merge if it is a fast-forward. Otherwise, I would
+						like to consider my options before anything is done
+						automatically. git pull --rebase can be used to
+						automatically do a rebase.
+					</aside>
+				</section>
+				<section>
+					<h1>GitHub Features Demo</h1>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git reset</code></h2>
+					<ul>
+						<li>
+							<code>git reset &lt;commit&gt;</code> will undo all
+							of the commits since the given commit and
+							put the changes in your working tree (red text).
+						</li>
+						<li>
+							<code>git reset --hard &lt;commit&gt;</code> will
+							undo commits since the given commit and drop the
+							changes entirely.
+						</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>
+								Both of these commands are commonly used with no
+								arguments to indicate the current commit (<code>HEAD</code>)
+							</li>
+							<li>
+								Many people believe you can't recover from a bad
+								git reset --hard, but you actually can with git
+								reflog.
+							</li>
+						</ul>
+					</aside>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>.gitignore</code></h2>
+					<code>.gitignore</code> is a file you can create so that git
+					will ignore a file or folder from its tracking. It is useful
+					for things like <code>node_modules</code> or log files.
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>~/.gitconfig</code></h2>
+					<pre><code data-trim class="shell">
+						$ git config --global commit.verbose true 
+						$ git config --global alias.co checkout 
+						$ git config --global alias.a add 
+						$ git config --global alias.c commit 
+						$ git config --global alias.s status 
+						$ git config --global alias.l log 
+						$ git config --global alias.b branch 
+						$ git config --global alias.ca "commit --amend" 
+						$ git config --global credential.helper store
+					</code></pre>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git commit --amend</code></h2>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git rebase</code></h2>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git reflog</code></h2>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git reset</code></h2>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git stash</code></h2>
 				</section>
 			</div>
 		</div>
