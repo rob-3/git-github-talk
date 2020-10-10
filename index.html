@@ -170,6 +170,7 @@
 					Each time you make changes that you want to put in the
 					project history, you will have to run <code>git add</code>
 					and <code>git commit</code>.
+					<div id="gc1"></div>
 					<aside class="notes">
 						<ul>
 							<li>
@@ -270,6 +271,7 @@
 						$ git checkout my_branch
 						$ git status
 					</code></pre>
+					<div id="gc2"></div>
 					<!-- Diagram -->
 					<aside class="notes">
 						<ul>
@@ -311,6 +313,7 @@
 						</li>
 						<li>There will be no merge commit.</li>
 					</ul>
+					<div id="gc3"></div>
 					<pre><code data-trim class="shell">
 						$ git checkout master
 						$ git merge my_branch
@@ -330,6 +333,7 @@
 						You might get a conflict if the two branches edited the
 						same files or lines of code.
 					</li>
+					<div id="gc4"></div>
 					<aside class="notes">
 						Git is pretty good at doing simple merges, but if there
 						is a conflict, it won't know what to do. How you resolve
@@ -504,18 +508,39 @@
 				</section>
 				<section data-visibility="uncounted">
 					<h2><code>git commit --amend</code></h2>
-				</section>
-				<section data-visibility="uncounted">
-					<h2><code>git rebase</code></h2>
-				</section>
-				<section data-visibility="uncounted">
-					<h2><code>git reflog</code></h2>
-				</section>
-				<section data-visibility="uncounted">
-					<h2><code>git reset</code></h2>
+					This command allows you to fix up your last commit. If you
+					made a mistake on the last commit, fix it, <code>git
+						add</code> the changes, and run <code>git commit
+						--amend</code>. You can even change the commit message!
 				</section>
 				<section data-visibility="uncounted">
 					<h2><code>git stash</code></h2>
+					<code>git stash</code> is useful when you need to do a merge
+					or rebase, but git won't let you since you have uncommitted
+					changes. Simply run <code>git stash</code> to hide away all
+					of your changes, do your merge/rebase, and then run
+					<code>git stash pop</code> to reapply your work from before.
+					<aside class="notes">
+						Note: git stash can cause a merge conflict. If it is a
+						large merge and only a little work, consider just
+						throwing away your work altogether with git stash drop.
+					</aside>
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git reflog</code></h2>
+					This command will save you some day when you do a
+					<code>git reset --hard</code>. The only thing it cannot save
+					is uncommitted work.
+				</section>
+				<section data-visibility="uncounted">
+					<h2><code>git rebase</code></h2>
+					<pre><code data-trim class="shell">
+						$ git checkout my_branch 
+						$ git rebase master
+					</code></pre>
+					<div id="gc5"></div>
+					<div id="gc6"></div>
+					<div id="gc7"></div>
 				</section>
 			</div>
 		</div>
@@ -534,6 +559,79 @@
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
+		</script>
+		<script src="plugin/gitgraph/gitgraph.js"></script>
+		<script>
+			const options = {
+				orientation: "horizontal",
+				template: "metro",
+				mode: "compact"
+			}
+			const ggc1 = document.getElementById("gc1")
+			const gg1 = GitgraphJS.createGitgraph(ggc1, options)
+			gg1.branch("master").commit("Initial commit")
+
+			const ggc2 = document.getElementById("gc2")
+			const gg2 = GitgraphJS.createGitgraph(ggc2, options)
+			gg2.branch("master").commit("Initial commit")
+			gg2.branch("my_branch").commit("Add branch commit").commit(
+				"Add another commit in this branch")
+
+			const ggc3 = document.getElementById("gc3")
+			const gg3 = GitgraphJS.createGitgraph(ggc3, options)
+			const master3 = gg3.branch("master") 
+			master3.commit("Initial commit").commit("Add second commit")
+			const branch3 = gg3.branch("my_branch")
+			branch3
+				.commit("Add branch commit")
+				.commit("Add another commit in this branch")
+				.commit("Add yet another commit in this branch")
+
+			const ggc4 = document.getElementById("gc4")
+			const gg4 = GitgraphJS.createGitgraph(ggc4, options)
+			const master4 = gg4.branch("master")
+			master4.commit("Initial commit").commit("Add second commit")
+			const branch4 = gg4.branch("my_branch")
+			branch4
+				.commit("Add branch commit")
+				.commit("Add another commit in this branch")
+				.commit("Add yet another commit in this branch")
+			master4.commit("Add a diverging commit")
+			master4.merge(branch4, "Merge my_branch into master")
+
+			const ggc5 = document.getElementById("gc5")
+			const gg5 = GitgraphJS.createGitgraph(ggc5, options)
+			const master5 = gg5.branch("master")
+			master5.commit("Initial commit").commit("Add second commit")
+			const branch5 = gg5.branch("my_branch")
+			branch5
+				.commit("Add branch commit")
+				.commit("Add another commit in this branch")
+				.commit("Add yet another commit in this branch")
+			master5.commit("Add a diverging commit")
+
+			const ggc6 = document.getElementById("gc6")
+			const gg6 = GitgraphJS.createGitgraph(ggc6, options)
+			const master6 = gg6.branch("master")
+			master6.commit("Initial commit").commit("Add second commit")
+			const branch6 = gg6.branch("my_branch")
+			branch6
+				.commit("Add branch commit")
+				.commit("Add another commit in this branch")
+				.commit("Add yet another commit in this branch")
+			master6.commit("Add a diverging commit")
+			master6.merge(branch6, "Merge my_branch into master")
+
+			const ggc7 = document.getElementById("gc7")
+			const gg7 = GitgraphJS.createGitgraph(ggc7, options)
+			const master7 = gg7.branch("master")
+			master7.commit("Initial commit").commit("Add second commit")
+			master7.commit("Add a diverging commit")
+			const branch7 = gg7.branch("my_branch")
+			branch7
+				.commit("Add branch commit")
+				.commit("Add another commit in this branch")
+				.commit("Add yet another commit in this branch")
 		</script>
 	</body>
 </html>
